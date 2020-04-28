@@ -1,28 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="demo-container">
+      <h1 class="title">授課時間</h1>
+      <Schedule />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import Schedule from './components/Schedule.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    Schedule,
   },
 };
 </script>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss" scoped>
+@import url(./app.scss);
+
+.demo-container {
+  max-width: 700px;
+  margin: auto;
+
+  .title {
+    margin-bottom: 20px;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
 }
 </style>
