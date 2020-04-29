@@ -5,21 +5,25 @@
       @nextWeek="checkoutNextWeek"
       @lastWeek="checkoutLastWeek"
     />
+
     <ScheduleContent :date="date" :schedule="schedule" />
+
+    <Loading v-if="showLoading" />
   </div>
 </template>
 
 <script>
 import dayjs from 'dayjs';
 import { from } from 'rxjs';
-import { switchMap, pluck } from 'rxjs/operators';
+import { switchMap, pluck, tap } from 'rxjs/operators';
 import ScheduleControl from './ScheduleControl.vue';
 import ScheduleContent from './ScheduleContent.vue';
+import Loading from './Loading.vue';
 import querySchedule from '../models/querySchedule';
 
 export default {
   components: {
-    ScheduleControl, ScheduleContent,
+    ScheduleControl, ScheduleContent, Loading,
   },
   data() {
     return {
@@ -32,6 +36,7 @@ export default {
 
     return {
       schedule: date$.pipe(
+        tap(this.resetSchedule),
         pluck('newValue'),
         switchMap((date) => from(
           querySchedule(date.toISOString()),
@@ -39,7 +44,15 @@ export default {
       ),
     };
   },
+  computed: {
+    showLoading() {
+      return !this.schedule;
+    },
+  },
   methods: {
+    resetSchedule() {
+      this.schedule = null;
+    },
     checkoutNextWeek() {
       this.date = this.date.add(1, 'week');
     },
