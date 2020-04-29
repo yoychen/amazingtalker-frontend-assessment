@@ -1,10 +1,11 @@
 import Vue from 'vue';
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import { Button, ButtonGroup, Icon } from 'element-ui';
 import VueRx from 'vue-rx';
 import App from './App.vue';
 
-Vue.use(ElementUI);
+Vue.use(Button);
+Vue.use(ButtonGroup);
+Vue.use(Icon);
 Vue.use(VueRx);
 
 Vue.config.productionTip = false;
