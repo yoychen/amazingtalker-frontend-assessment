@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="demo-container">
-      <h1 class="title">授課時間</h1>
+      <h1 class="section-title">授課時間</h1>
       <Schedule />
     </div>
   </div>
@@ -18,14 +18,21 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import url(./app.scss);
+<style lang="scss">
+@import "@/app.scss";
+
+body {
+  line-height: 1.5;
+  font-family: Helvetica Neue,Helvetica,Arial,PingFang HK,\.PingFang-SC-Regular,
+    PingFang,Hiragino Sans GB,STHeiti,Microsoft JhengHei,sans-serif;
+  color: $color-black;
+}
 
 .demo-container {
   max-width: 700px;
   margin: auto;
 
-  .title {
+  .section-title {
     margin-bottom: 20px;
     font-size: 1.25rem;
     font-weight: 500;

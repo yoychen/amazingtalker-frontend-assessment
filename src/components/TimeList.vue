@@ -1,19 +1,18 @@
 <template>
-  <div class="day">
+  <div class="day" :class="{ active }">
     <div class="title">
-      <span>三</span>
-      <span>29</span>
+      <span>{{ date.format('ddd') }}</span>
+      <span>{{ date.format('DD') }}</span>
     </div>
 
     <div class="time-list">
-      <div class="time">
-        00:00
-      </div>
-      <div class="time available">
-        00:00
-      </div>
-      <div class="time">
-        00:00
+      <div
+        class="time"
+        :class="{ available: timeSlot.status === 'available' }"
+        v-for="timeSlot in timeSlots"
+        :key="timeSlot.time.valueOf()"
+      >
+        {{ timeSlot.time.format('HH:mm') }}
       </div>
     </div>
   </div>
@@ -21,22 +20,42 @@
 
 <script>
 export default {
-
+  props: {
+    date: {
+      type: Object,
+      required: true,
+    },
+    timeSlots: {
+      type: Array,
+      required: true,
+    },
+  },
+  computed: {
+    active() {
+      return this.timeSlots.length > 0;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+@import "@/app.scss";
+
 .day {
-  flex-grow: 1;
+  flex: 1;
   margin: 0 5px;
-  border-top: 4px solid #d2d2d2;
+  border-top: 4px solid $color-light-gray;
   text-align: center;
   &.active {
-    border-top-color: #02cab9;
+    border-top-color: $color-green;
+    .title {
+      color: $color-black;
+    }
   }
 
   .title {
     padding: 10px 0;
+    color: $color-light-gray;
     span {
       display: block;
     }
@@ -44,10 +63,10 @@ export default {
 
   .time {
     padding: 4px 0;
-    color: #b6b6b6;
+    color: $color-gray;
     font-size: 12px;
     &.available {
-      color: #02cab9;
+      color: $color-green;
       font-weight: 700;
     }
   }
