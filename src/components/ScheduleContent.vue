@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { add, isAfter, format } from '@/utils/date';
+import { add, isAfter } from '@/utils/date';
 import TimeList from './TimeList.vue';
 
 export default {
@@ -43,7 +43,7 @@ export default {
         return [];
       }
 
-      const timeSlots = this.schedule[format(date, 'YYYY_MM_DD')] || [];
+      const timeSlots = this.schedule[date.getDate()] || [];
       // 因為所用的測試資料是靜態的，會有過去時間點的資料，故額外做 filter
       return timeSlots.filter((timeSlot) => isAfter(timeSlot.time, new Date()));
     },

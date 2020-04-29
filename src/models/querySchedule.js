@@ -1,4 +1,4 @@
-import { add, isAfter, format } from '@/utils/date';
+import { add, isAfter } from '@/utils/date';
 import fakeAxios from '../utils/fakeAxios';
 
 function getSortedTimeBlocks(schedule) {
@@ -22,7 +22,7 @@ function getTimeSlots(timeBlock, interval = 30) {
   while (isAfter(end, start)) {
     timeSlots.push({
       status: timeBlock.status,
-      time: start,
+      time: new Date(start),
     });
     start = add(start, interval, 'minute');
   }
@@ -31,7 +31,7 @@ function getTimeSlots(timeBlock, interval = 30) {
 }
 
 function groupByDate(schedule, timeSlot) {
-  const date = format(timeSlot.time, 'YYYY_MM_DD');
+  const date = timeSlot.time.getDate();
 
   if (schedule[date]) {
     schedule[date].push(timeSlot);
