@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import dayjs from 'dayjs';
 import { from } from 'rxjs';
 import { switchMap, pluck, tap } from 'rxjs/operators';
+import { add, subtract, startOf } from '@/utils/date';
 import ScheduleControl from './ScheduleControl.vue';
 import ScheduleContent from './ScheduleContent.vue';
 import Loading from './Loading.vue';
@@ -27,7 +27,7 @@ export default {
   },
   data() {
     return {
-      date: dayjs().startOf('week'),
+      date: startOf(new Date(), 'week'),
       schedule: null,
     };
   },
@@ -54,10 +54,10 @@ export default {
       this.schedule = null;
     },
     checkoutNextWeek() {
-      this.date = this.date.add(1, 'week');
+      this.date = add(this.date, 1, 'week');
     },
     checkoutLastWeek() {
-      this.date = this.date.subtract(1, 'week');
+      this.date = subtract(this.date, 1, 'week');
     },
   },
 };

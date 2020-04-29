@@ -1,28 +1,30 @@
 <template>
   <div class="day" :class="{ active }">
     <div class="title">
-      <span>{{ date.format('ddd') }}</span>
-      <span>{{ date.format('DD') }}</span>
+      <span>{{ format(date, 'ddd') }}</span>
+      <span>{{ format(date, 'DD') }}</span>
     </div>
 
     <div class="time-list">
       <div
         class="time"
-        :class="{ available: timeSlot.status === 'available' }"
+        :class="{ available: isAvailable(timeSlot) }"
         v-for="timeSlot in timeSlots"
         :key="timeSlot.time.valueOf()"
       >
-        {{ timeSlot.time.format('HH:mm') }}
+        {{ format(timeSlot.time, 'HH:mm') }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { format, isSame } from '@/utils/date';
+
 export default {
   props: {
     date: {
-      type: Object,
+      type: Date,
       required: true,
     },
     timeSlots: {
@@ -32,7 +34,14 @@ export default {
   },
   computed: {
     active() {
-      return this.timeSlots.length > 0;
+      return this.timeSlots.length > 0
+        || isSame(this.date, new Date(), 'date');
+    },
+  },
+  methods: {
+    format,
+    isAvailable(timeSlot) {
+      return timeSlot.status === 'available';
     },
   },
 };

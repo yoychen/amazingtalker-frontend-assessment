@@ -15,27 +15,39 @@
     </el-button-group>
 
     <span class="range">{{ rangeOfSchedule }}</span>
-    <span class="time-zone">* 時間以 {{ timeZone }} (GMT{{ date.format('Z') }}) 顯示</span>
+    <span class="time-zone">* 時間以 {{ timeZone.city }} (GMT{{ timeZone.offsetFromUTC }}) 顯示</span>
   </div>
 </template>
 
 <script>
+import {
+  add,
+  format,
+  isSame,
+  timeZone,
+} from '@/utils/date';
+
 export default {
   props: {
     date: {
-      type: Object,
+      type: Date,
       required: true,
     },
   },
+  data() {
+    return {
+      timeZone: timeZone(),
+    };
+  },
   computed: {
     rangeOfSchedule() {
-      return `${this.date.format('YYYY/MM/DD')} - ${this.date.add(7, 'day').format('DD')}`;
+      const from = format(this.date, 'YYYY/MM/DD');
+      const to = format(add(this.date, 7, 'day'), 'DD');
+
+      return `${from} - ${to}`;
     },
     isCurrentWeek() {
-      return this.date.isSame(new Date(), 'week');
-    },
-    timeZone() {
-      return Intl.DateTimeFormat().resolvedOptions().timeZone.split('/')[1];
+      return isSame(this.date, new Date(), 'week');
     },
   },
 };

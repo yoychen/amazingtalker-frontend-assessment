@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import { add, isAfter, format } from '@/utils/date';
 import fakeAxios from '../utils/fakeAxios';
 
 function getSortedTimeBlocks(schedule) {
@@ -15,23 +15,23 @@ function getSortedTimeBlocks(schedule) {
 }
 
 function getTimeSlots(timeBlock, interval = 30) {
-  let start = dayjs(timeBlock.start);
-  const end = dayjs(timeBlock.end);
+  let { start } = timeBlock;
+  const { end } = timeBlock;
   const timeSlots = [];
 
-  while (end.isAfter(start)) {
+  while (isAfter(end, start)) {
     timeSlots.push({
       status: timeBlock.status,
       time: start,
     });
-    start = start.add(interval, 'minute');
+    start = add(start, interval, 'minute');
   }
 
   return timeSlots;
 }
 
 function groupByDate(schedule, timeSlot) {
-  const date = timeSlot.time.format('YYYY_MM_DD');
+  const date = format(timeSlot.time, 'YYYY_MM_DD');
 
   if (schedule[date]) {
     schedule[date].push(timeSlot);
