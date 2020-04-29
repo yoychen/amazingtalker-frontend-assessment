@@ -1,3 +1,7 @@
+import pipe from 'lodash/fp/pipe';
+import map from 'lodash/fp/map';
+import flatMap from 'lodash/fp/flatMap';
+import groupBy from 'lodash/fp/groupBy';
 import { add, isAfter } from '@/utils/date';
 import fakeAxios from '../utils/fakeAxios';
 
@@ -5,13 +9,10 @@ function getSortedTimeBlocks(schedule) {
   const withStatus = (status) => (time) => ({ ...time, status });
   const sortByDate = (a, b) => new Date(a.start) - new Date(b.start);
 
-  const timeBlocks = [
-    ...schedule.available.map(withStatus('available')),
-    ...schedule.booked.map(withStatus('booked')),
-  ];
-  timeBlocks.sort(sortByDate);
-
-  return timeBlocks;
+  return [
+    ...map(withStatus('available'))(schedule.available),
+    ...map(withStatus('booked'))(schedule.booked),
+  ].sort(sortByDate);
 }
 
 function getTimeSlots(timeBlock, interval = 30) {
@@ -30,26 +31,17 @@ function getTimeSlots(timeBlock, interval = 30) {
   return timeSlots;
 }
 
-function groupByDate(schedule, timeSlot) {
-  const date = timeSlot.time.getDate();
-
-  if (schedule[date]) {
-    schedule[date].push(timeSlot);
-  } else {
-    // eslint-disable-next-line no-param-reassign
-    schedule[date] = [timeSlot];
-  }
-
-  return schedule;
-}
-
 export default async function querySchedule(startedAt) {
   const rawSchedule = await fakeAxios('schedule', {
     params: { started_at: startedAt },
   });
 
-  const timeBlocks = getSortedTimeBlocks(rawSchedule);
-  const timeSlots = timeBlocks.map((timeBlock) => getTimeSlots(timeBlock)).flat();
+  const splitTimeBlocks = flatMap((timeBlock) => getTimeSlots(timeBlock));
+  const groupByDate = groupBy((timeSlot) => timeSlot.time.getDate());
 
-  return timeSlots.reduce(groupByDate, {});
+  return pipe(
+    getSortedTimeBlocks,
+    splitTimeBlocks,
+    groupByDate,
+  )(rawSchedule);
 }

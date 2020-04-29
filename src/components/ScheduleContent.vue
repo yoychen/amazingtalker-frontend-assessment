@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import filter from 'lodash/fp/filter';
+import range from 'lodash/range';
 import { add, isAfter } from '@/utils/date';
 import TimeList from './TimeList.vue';
 
@@ -28,13 +30,8 @@ export default {
   },
   computed: {
     week() {
-      const week = [];
-
-      for (let i = 0; i < 7; i += 1) {
-        week.push(add(this.date, i, 'day'));
-      }
-
-      return week;
+      return range(7)
+        .map((amount) => add(this.date, amount, 'day'));
     },
   },
   methods: {
@@ -45,7 +42,8 @@ export default {
 
       const timeSlots = this.schedule[date.getDate()] || [];
       // 因為所用的測試資料是靜態的，會有過去時間點的資料，故額外做 filter
-      return timeSlots.filter((timeSlot) => isAfter(timeSlot.time, new Date()));
+      const excludePast = filter((timeSlot) => isAfter(timeSlot.time, new Date()));
+      return excludePast(timeSlots);
     },
   },
 };
