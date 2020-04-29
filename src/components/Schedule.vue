@@ -11,6 +11,8 @@
 
 <script>
 import dayjs from 'dayjs';
+import { from } from 'rxjs';
+import { switchMap, pluck } from 'rxjs/operators';
 import ScheduleControl from './ScheduleControl.vue';
 import ScheduleContent from './ScheduleContent.vue';
 import querySchedule from '../models/querySchedule';
@@ -25,18 +27,19 @@ export default {
       schedule: null,
     };
   },
-  watch: {
-    date: {
-      immediate: true,
-      handler() {
-        this.loadSchedule();
-      },
-    },
+  subscriptions() {
+    const date$ = this.$watchAsObservable('date', { immediate: true });
+
+    return {
+      schedule: date$.pipe(
+        pluck('newValue'),
+        switchMap((date) => from(
+          querySchedule(date.toISOString()),
+        )),
+      ),
+    };
   },
   methods: {
-    async loadSchedule() {
-      this.schedule = await querySchedule(this.date.toISOString());
-    },
     checkoutNextWeek() {
       this.date = this.date.add(1, 'week');
     },
