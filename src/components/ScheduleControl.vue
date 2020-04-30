@@ -15,7 +15,7 @@
     </el-button-group>
 
     <span class="range">{{ rangeOfSchedule }}</span>
-    <span class="time-zone">* 時間以 {{ timeZone.city }} (GMT{{ timeZone.offsetFromUTC }}) 顯示</span>
+    <span class="time-zone">{{ $t('timeZone', timeZone) }}</span>
   </div>
 </template>
 
@@ -65,7 +65,9 @@ export default {
 
   .time-zone {
     margin-left: auto;
+    text-align: right;
     font-size: 12px;
+    line-height: 2;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="day" :class="{ active }">
     <div class="title">
-      <span>{{ format(date, 'ddd') }}</span>
+      <span>{{ $t(`date.${format(date, 'ddd')}`) }}</span>
       <span>{{ format(date, 'DD') }}</span>
     </div>
 

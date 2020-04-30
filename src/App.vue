@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <div class="demo-container">
-      <h1 class="section-title">授課時間</h1>
+      <h1 class="section-title">
+        {{ $t('availableTimes') }}
+        <LocaleChanger />
+      </h1>
       <Schedule />
     </div>
   </div>
@@ -9,11 +12,12 @@
 
 <script>
 import Schedule from './components/Schedule.vue';
+import LocaleChanger from './components/LocaleChanger.vue';
 
 export default {
   name: 'App',
   components: {
-    Schedule,
+    Schedule, LocaleChanger,
   },
 };
 </script>
@@ -36,6 +40,10 @@ body {
     margin-bottom: 20px;
     font-size: 1.25rem;
     font-weight: 500;
+
+    .locale-changer {
+      float: right;
+    }
   }
 }
 </style>
