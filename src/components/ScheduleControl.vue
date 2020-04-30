@@ -54,6 +54,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/app.scss';
+
 .schedule-control {
   display: flex;
   align-items: center;
@@ -68,6 +70,24 @@ export default {
     text-align: right;
     font-size: 12px;
     line-height: 2;
+  }
+
+  .el-button {
+    &:not(.is-disabled):hover {
+      color: $color-green;
+      border-color: $color-green;
+      background-color: transparent;
+    }
+    &:not(.is-disabled):active {
+      color: $color-dark-green;
+      border-color: $color-dark-green;
+      background-color: transparent;
+    }
+    &:focus {
+      color: #5a5e66;
+      border-color: #d8dce5;
+      background: transparent;
+    }
   }
 }
 </style>
