@@ -4,17 +4,19 @@
       <el-button
         size="mini"
         icon="el-icon-arrow-left"
+        data-testid="last-week-btn"
         @click="$emit('lastWeek')"
         :disabled="isCurrentWeek"
       ></el-button>
       <el-button
         size="mini"
         icon="el-icon-arrow-right"
+        data-testid="next-week-btn"
         @click="$emit('nextWeek')"
       ></el-button>
     </el-button-group>
 
-    <span class="range">{{ rangeOfSchedule }}</span>
+    <span data-testid="range" class="range">{{ rangeOfSchedule }}</span>
     <span class="time-zone">{{ $t('timeZone', timeZone) }}</span>
   </div>
 </template>

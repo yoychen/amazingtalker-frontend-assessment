@@ -7,6 +7,7 @@
 
     <div class="time-list">
       <div
+        data-testid="time-slot"
         class="time"
         :class="{ available: isAvailable(timeSlot) }"
         v-for="timeSlot in timeSlots"
