@@ -20,6 +20,7 @@ import ScheduleControl from './ScheduleControl.vue';
 import ScheduleContent from './ScheduleContent.vue';
 import Loading from './Loading.vue';
 import querySchedule from '../models/querySchedule';
+import withToastingError from '../utils/withToastingError';
 
 export default {
   components: {
@@ -39,7 +40,7 @@ export default {
         tap(this.resetSchedule),
         pluck('newValue'),
         switchMap((date) => from(
-          querySchedule(date.toISOString()),
+          withToastingError(querySchedule)(date.toISOString()),
         )),
       ),
     };

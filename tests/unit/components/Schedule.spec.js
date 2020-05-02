@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+import { Message } from 'element-ui';
 import Schedule from '@/components/Schedule.vue';
 import ScheduleControl from '@/components/ScheduleControl.vue';
 import ScheduleContent from '@/components/ScheduleContent.vue';
@@ -6,6 +7,7 @@ import querySchedule from '@/models/querySchedule';
 import { createFakeSchedule } from '../helpers';
 
 jest.mock('@/models/querySchedule');
+jest.mock('element-ui');
 
 function setup(data = {}) {
   return {
@@ -42,6 +44,16 @@ describe('Schedule', () => {
     await wrapper.vm.$nextTick();
 
     expect(wrapper.vm.schedule).toBe(schedule);
+  });
+
+  it('should toast error message on fetch failure', async () => {
+    querySchedule.mockReturnValue(Promise.reject());
+
+    const { wrapper } = setup();
+    await wrapper.vm.$nextTick();
+
+    expect(Message.error.mock.calls.length).toBe(1);
+    Message.error.mockClear();
   });
 
   it('should fetch schedule data after changed date', async () => {
