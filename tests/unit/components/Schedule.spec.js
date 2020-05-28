@@ -65,6 +65,7 @@ describe('Schedule', () => {
     const { wrapper } = setup();
     wrapper.setData({ date: new Date() });
     await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
 
     expect(wrapper.vm.schedule).toBe(newSchedule);
   });
